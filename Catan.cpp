@@ -9,11 +9,10 @@
 using std::array;
 using std::pair;
 using std::vector;
-pair<int, unsigned int> biggestArmy(-1, 3);
 Catan::Catan()
 {
+    biggestArmy = std::make_pair(-1, 3);
     createDCs(); //  create develop cards
-    // this->game_board=Board();
 }
 void Catan::createDCs()
 {
@@ -148,21 +147,18 @@ int Catan::canUseDC(Player *p, DCType dc)
     }
     return -1;
 }
-int Catan::useKnight(Player *p, array<Player, COUNT_PLAYERS> players, int index)
+int Catan::getOwnerOfBiggestArmy()
+{
+    return this->biggestArmy.first;
+}
+int Catan::useKnight(Player *p, Player *p2, int index)
 {
     p->updateKnightsCount(1);
     if (p->getKnightsCount() >= biggestArmy.second)
     {
-        biggestArmy.second = p->getKnightsCount();
-        if (biggestArmy.first != -1)
+        if (p->getID() != p2->getID())
         {
-            for (unsigned int i = 0; i < COUNT_PLAYERS; i++)
-            {
-                if (players[i].getID() == biggestArmy.first)
-                {
-                    players[i].updateVictoryPoints(-2);
-                }
-            }
+            p2->updateVictoryPoints(-2);
         }
         p->updateVictoryPoints(2);
         biggestArmy.first = p->getID();
@@ -199,17 +195,17 @@ int Catan::useYearOfPlenty(Player *p, resourceType r1, resourceType r2, int inde
     this->game_dcs[index].used = true;
     return 0;
 }
-int Catan::useMonopoly(Player *p, resourceType rt, array<Player, COUNT_PLAYERS> players, int index)
+int Catan::useMonopoly(Player *p, resourceType rt, array<Player *, COUNT_PLAYERS> players, int index)
 {
     unsigned int sum = 0;
     unsigned int resourceCount = 0;
-    for (unsigned int i = 0; i < COUNT_ROADS; i++)
+    for (unsigned int i = 0; i < COUNT_PLAYERS; i++)
     {
-        if (players[i].getID() != p->getID())
+        if (players[i]->getID() != p->getID())
         {
             try
             {
-                resourceCount = players[i].getResourceCount(rt);
+                resourceCount = players[i]->getResourceCount(rt);
             }
             catch (const std::exception &e)
             {
@@ -219,7 +215,7 @@ int Catan::useMonopoly(Player *p, resourceType rt, array<Player, COUNT_PLAYERS> 
             sum += resourceCount;
             try
             {
-                players[i].updateResource(rt, -1 * resourceCount);
+                players[i]->updateResource(rt, -1 * resourceCount);
             }
             catch (const std::exception &e)
             {
@@ -230,7 +226,7 @@ int Catan::useMonopoly(Player *p, resourceType rt, array<Player, COUNT_PLAYERS> 
     }
     try
     {
-        p->updateResource(rt, resourceCount);
+        p->updateResource(rt, sum);
     }
     catch (const std::exception &e)
     {
@@ -262,7 +258,7 @@ void Catan::trade(vector<pair<resourceType, unsigned int>> resourcesToTrade, Pla
     for (unsigned int i = 0; i < resourcesToTrade.size(); i++)
     {
         p1->updateResource(resourcesToTrade[i].first, resourcesToTrade[i].second);
-        p2->updateResource(resourcesToTrade[i].first, -1 * resourcesToTrade[i].second);
+        p2->updateResource(resourcesToTrade[i].first, (-1 * resourcesToTrade[i].second));
     }
 }
 bool Catan::check_winner(Player *p)

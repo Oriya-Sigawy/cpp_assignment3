@@ -335,7 +335,18 @@ bool Frontend::useDC_F()
     switch (dc)
     {
     case KNIGHT:
-        this->game.useKnight(this->turn, this->players, index);
+        if (his->game.getOwnerOfBiggestArmy() == -1)
+        {
+            this->game.useKnight(this->turn, this->turn, index);
+        }
+        else
+        {
+            (unsigned int i = 0; i < COUNT_PLAYERS; i++)
+            {
+                if (this->players[i].getID() == this->game.getOwnerOfBiggestArmy())
+                    this->game.useKnight(this->turn, &this->players[i], index);
+            }
+        }
         break;
     case VICTORY_POINT:
         this->game.useVictoryPoint(this->turn, index);
@@ -408,7 +419,13 @@ bool Frontend::useMDC_F(int index)
     {
         std::cerr << e.what() << '\n';
     }
-    return this->game.useMonopoly(this->turn, rt, this->players, index);
+    array<Player *, COUNT_PLAYERS> temp_players;
+    for (unsigned int i = 0; i < COUNT_PLAYERS; i++)
+    {
+        temp_players[i] = &this->players[i];
+    }
+
+    return this->game.useMonopoly(this->turn, rt, temp_players, index);
 }
 string Frontend::convertResourceToString(resourceType rt)
 {

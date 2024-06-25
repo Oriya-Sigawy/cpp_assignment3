@@ -1,6 +1,7 @@
 
 #pragma once
 // 214984932 Oriyas.07@gmail.com
+#include <utility>
 #include "doctest.h"
 #include "Catan.hpp"
 #include "Board.hpp"
@@ -185,7 +186,7 @@ TEST_CASE("check buyDC, useVP, canUseDC")
     Player player0 = Player(0);
     Player player1 = Player(1);
     Player player2 = Player(2);
-    std::array<Player, COUNT_PLAYERS> players = {player0, player1, player2};
+    // std::array<Player, COUNT_PLAYERS> players = {player0, player1, player2};
     CHECK(game.buyDevelopCard(&player2, VICTORY_POINT) == -1); // player2 does not have enough resources
     player0.updateResource(GRAIN, TYPES_COUNT + 2);            // will buy 3 knights
     player0.updateResource(ORE, TYPES_COUNT + 2);
@@ -206,23 +207,115 @@ TEST_CASE("check buyDC, useVP, canUseDC")
     CHECK(game.buyDevelopCard(&player0, KNIGHT) == 0);
     index = game.canUseDC(&player0, KNIGHT);
     CHECK(index >= 0);
-    CHECK(game.useKnight(&player0, players, index) == 0);
+    CHECK(game.useKnight(&player0, &player0, index) == 0);
     CHECK(player0.getKnightsCount() == 1);
 
     CHECK(game.buyDevelopCard(&player0, KNIGHT) == 0);
     index = game.canUseDC(&player0, KNIGHT);
     CHECK(index >= 0);
-    CHECK(game.useKnight(&player0, players, index) == 0);
+    CHECK(game.useKnight(&player0, &player0, index) == 0);
     CHECK(player0.getKnightsCount() == 2);
 
     CHECK(game.buyDevelopCard(&player0, KNIGHT) == 0);
     index = game.canUseDC(&player0, KNIGHT);
     CHECK(index >= 0);
     CHECK(player0.getVictoryPoints() == 1);
-    CHECK(game.useKnight(&player0, players, index) == 0);
+    CHECK(game.useKnight(&player0, &player0, index) == 0);
     CHECK(player0.getKnightsCount() == 3);
     CHECK(player0.getVictoryPoints() == 3);
-    
+
+    player1.updateKnightsCount(3);
+    player1.updateResource(GRAIN, 1); // will buy 3 knights
+    player1.updateResource(ORE, 1);
+    player1.updateResource(WOOL, 1);
+    game.buyDevelopCard(&player1, KNIGHT);
+    index = game.canUseDC(&player1, KNIGHT);
+    CHECK(index >= 0);
+    x = game.useKnight(&player1, &player0, index);
+    CHECK(x == 0);
+    CHECK(player1.getKnightsCount() == 4);
+    CHECK(player1.getVictoryPoints() == 2);
+    CHECK(player0.getVictoryPoints() == 1);
+}
+
+TEST_CASE("check useYearOfPlenty")
+{
+    Catan game = Catan();
+    Player p = Player(0);
+    p.updateResource(GRAIN, 2);
+    p.updateResource(ORE, 2);
+    p.updateResource(WOOL, 2);
+    CHECK(p.getResourceCount(BRICK) == 0);
+    CHECK(p.getResourceCount(LUMBER) == 0);
+    CHECK(game.buyDevelopCard(&p, YEAR_OF_PLENTY) == 0);
+    int index = game.canUseDC(&p, YEAR_OF_PLENTY);
+    CHECK(index >= 0);
+    CHECK(game.useYearOfPlenty(&p, BRICK, LUMBER, index) == 0);
+    CHECK(p.getResourceCount(BRICK) == 1);
+    CHECK(p.getResourceCount(LUMBER) == 1);
+}
+
+TEST_CASE("check useMonopoly")
+{
+    Catan game = Catan();
+    Player p = Player(0);
+    Player p1 = Player(1);
+    Player p2 = Player(2);
+    array<Player *, 3> players = {&p, &p1, &p2};
+    p.updateResource(GRAIN, 1);
+    p.updateResource(ORE, 1);
+    p.updateResource(WOOL, 1);
+    p1.updateResource(LUMBER, 2);
+    p2.updateResource(LUMBER, 3);
+    CHECK(p.getResourceCount(LUMBER) == 0);
+    CHECK(game.buyDevelopCard(&p, MONOPOLY) == 0);
+    int index = game.canUseDC(&p, MONOPOLY);
+    CHECK(index >= 0);
+    int x = game.useMonopoly(&p, LUMBER, players, index);
+    CHECK(x == 0);
+    CHECK(p.getResourceCount(LUMBER) == 5);
+    CHECK(p1.getResourceCount(LUMBER) == 0);
+    CHECK(p2.getResourceCount(LUMBER) == 0);
+}
+
+TEST_CASE("check useRoadBuilding()")
+{
+    Catan game = Catan();
+    Player p = Player(0);
+    // build roads to be connected to the road p will build with the DC
+    p.updateResource(BRICK, 2);
+    p.updateResource(LUMBER, 2);
+    game.buildRoad(&p, 1, 4, true);
+    game.buildRoad(&p, 2, 6, true);
+
+    // resources to buy the DC
+    p.updateResource(GRAIN, 1);
+    p.updateResource(ORE, 1);
+    p.updateResource(WOOL, 1);
+    CHECK(game.buyDevelopCard(&p, ROAD_BUILDING) == 0);
+    int index = game.canUseDC(&p, ROAD_BUILDING);
+    CHECK(index >= 0);
+    std::pair<unsigned int, unsigned int> r1 = std::make_pair(1, 5);
+    std::pair<unsigned int, unsigned int> r2 = std::make_pair(6, 10);
+    int x = game.useRoadBuilding(&p, r1, r2, index);
+    CHECK(x == 0);
+
+    // check that p's road is not valid to build on
+    Player p1 = Player(1);
+    x = game.buildRoad(&p1, 1, 5, true);
+    CHECK(x == -1);
+}
+
+TEST_CASE("check trade()")
+{
+    Catan game = Catan();
+    Player p0 = Player(0);
+    Player p1 = Player(1);
+    p0.updateResource(LUMBER, 3);
+    std::vector<std::pair<resourceType, unsigned int>> trade = {std::make_pair(LUMBER, 2)};
+    game.trade(trade, &p1, &p0);
+    CHECK(p0.getResourceCount(LUMBER) == 1);
+    CHECK(p1.getResourceCount(LUMBER) == 2);
 }
 
 TEST_CASE("check check_winner()")

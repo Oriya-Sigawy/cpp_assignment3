@@ -32,10 +32,12 @@ class Catan
 {
     array<DevelopCard, COUNT_DCS> game_dcs;
     Board game_board = Board();
+    pair<int, unsigned int> biggestArmy;
 
 private:
     void createDCs();
     bool dcHasOwner(unsigned int i);
+    int getOwnerOfBiggestArmy();
 
 public:
     Catan();
@@ -46,10 +48,10 @@ public:
     int updateToCity(Player *p, unsigned int s);
     int buyDevelopCard(Player *p, DCType dc);
     int canUseDC(Player *p, DCType dc);
-    int useKnight(Player *p, array<Player, COUNT_PLAYERS> players, int index);
+    int useKnight(Player *p, Player *p2, int index);
     int useVictoryPoint(Player *p, int index);
     int useYearOfPlenty(Player *p, resourceType r1, resourceType r2, int index);
-    int useMonopoly(Player *p, resourceType rt, array<Player, COUNT_PLAYERS> players, int index);
+    int useMonopoly(Player *p, resourceType rt, array<Player *, COUNT_PLAYERS> players, int index);
     int useRoadBuilding(Player *p, pair<unsigned int, unsigned int> r1, pair<unsigned int, unsigned int> r2, int index);
     void trade(vector<pair<resourceType, unsigned int>> resourcesToTrade, Player *p1, Player *p2);
     bool check_winner(Player *p);
