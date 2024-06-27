@@ -44,7 +44,7 @@ Catan's methods:
 * `getOwnerOfBiggestArmy()`
 The class has more private functions that help the public functions.
 
-`The Frontend class` - this class deals with communication with the user. The class receives the user's choices and bring them to Catan.  This class is the manager class.
+`The Frontend class` - this class deals with communication with the user. The class receives the user's choices and bring them to Catan.  This class is the manager class.  
 Frontend's methods:
 * `Frontend()` : constructor.
 * `updateToCityF()`
@@ -62,3 +62,9 @@ Frontend's methods:
 * `rollDice_F` : presents to the user what number was rolled on the dice.
 * `allocateFB` : used for the initial resources allocation in the beginning of the game.
 The class has more private functions that help the public functions.
+
+HOW TO RUN THIS CODE?
+* To run the frontend, use `make frontend` or just `make` and than `./frontend` .
+* To run the test, use `make test` and than `./test` .
+* To run the main, use `make main` and than `./main` .  
+GOOD LUCK!
