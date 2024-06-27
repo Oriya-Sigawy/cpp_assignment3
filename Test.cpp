@@ -206,12 +206,12 @@ TEST_CASE("check buyDC, useVP")
     CHECK(game.buyDevelopCard(&player0, TYPES_COUNT) == -2); // there is no DC with the type "TYPES_COUNT"
 
     // check victory point
-    CHECK(game.buyDevelopCard(&player0, VICTORY_POINT) == 0);
-    int index = game.canUseDC(&player0, VICTORY_POINT);
+    CHECK(game.buyDevelopCard(&player0, VICTORY_POINT) == 0); // succeed to buy the VP card
+    int index = game.canUseDC(&player0, VICTORY_POINT);       // can use it
     CHECK(index >= 0);
-    CHECK(game.useVictoryPoint(&player0, index) == 0);
+    CHECK(game.useVictoryPoint(&player0, index) == 0); // use it
     CHECK(player0.getVictoryPoints() == 1);
-    int x = game.canUseDC(&player0, VICTORY_POINT);
+    int x = game.canUseDC(&player0, VICTORY_POINT); // already used
     CHECK(x == -1);
 }
 TEST_CASE("check useKnight")
@@ -220,19 +220,19 @@ TEST_CASE("check useKnight")
     Catan game = Catan();
     Player player0 = Player(0);
     Player player1 = Player(1);
-    player0.updateResource(GRAIN, 2); // will buy 3 knights
-    player0.updateResource(ORE, 2);
-    player0.updateResource(WOOL, 2);
+    player0.updateResource(GRAIN, TYPES_COUNT);
+    player0.updateResource(ORE, TYPES_COUNT);
+    player0.updateResource(WOOL, TYPES_COUNT);
     CHECK(game.getOwnerOfBiggestArmy() == -1);
-    
-    CHECK(game.buyDevelopCard(&player0, KNIGHT) == 0);
-    int index = game.canUseDC(&player0, KNIGHT);
+
+    CHECK(game.buyDevelopCard(&player0, KNIGHT) == 0); // succeed to buy the knight DC
+    int index = game.canUseDC(&player0, KNIGHT);       // can use it
     CHECK(index >= 0);
     CHECK(game.useKnight(&player0, &player0, index) == 0);
     CHECK(player0.getKnightsCount() == 1);
 
-    CHECK(game.buyDevelopCard(&player0, KNIGHT) == 0);
-    index = game.canUseDC(&player0, KNIGHT);
+    CHECK(game.buyDevelopCard(&player0, KNIGHT) == 0); // succeed to buy the knight DC
+    index = game.canUseDC(&player0, KNIGHT);           // can use it
     CHECK(index >= 0);
     CHECK(game.useKnight(&player0, &player0, index) == 0);
     CHECK(player0.getKnightsCount() == 2);
@@ -240,10 +240,10 @@ TEST_CASE("check useKnight")
     CHECK(game.buyDevelopCard(&player0, KNIGHT) == 0);
     index = game.canUseDC(&player0, KNIGHT);
     CHECK(index >= 0);
-    CHECK(player0.getVictoryPoints() == 1);
+    CHECK(player0.getVictoryPoints() == 0);
     CHECK(game.useKnight(&player0, &player0, index) == 0);
     CHECK(player0.getKnightsCount() == 3);
-    CHECK(player0.getVictoryPoints() == 3);
+    CHECK(player0.getVictoryPoints() == 2);
 
     player1.updateKnightsCount(3);
     player1.updateResource(GRAIN, 1); // will buy 3 knights
@@ -256,7 +256,7 @@ TEST_CASE("check useKnight")
     CHECK(x == 0);
     CHECK(player1.getKnightsCount() == 4);
     CHECK(player1.getVictoryPoints() == 2);
-    CHECK(player0.getVictoryPoints() == 1);
+    CHECK(player0.getVictoryPoints() == 0);
 }
 
 TEST_CASE("check useYearOfPlenty")
