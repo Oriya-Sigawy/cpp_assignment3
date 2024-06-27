@@ -42,6 +42,7 @@ typedef struct
     pair<unsigned int, unsigned int> intersections; // pair of the 2 adjacent intersection (IDs of intersections)
 } Road;
 
+// This class represent a BOard of the catan's game
 class Board
 {
     array<Hexagon, COUNT_LANDS> lands;

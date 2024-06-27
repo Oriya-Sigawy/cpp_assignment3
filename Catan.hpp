@@ -13,6 +13,7 @@ using std::vector;
 #define COUNT_DCS 25
 #define POINTS_TO_WIN 10
 
+// enum for the type of the develop card
 enum DCType
 {
     KNIGHT,
@@ -22,12 +23,16 @@ enum DCType
     YEAR_OF_PLENTY,
     TYPES_COUNT
 };
+
+// struct for develop card
 typedef struct
 {
     DCType type;
     Player *owner;
-    bool used;
+    bool used; // true if the card already used
 } DevelopCard;
+
+// This class represent the logic of catan's game
 class Catan
 {
     array<DevelopCard, COUNT_DCS> game_dcs;
@@ -35,12 +40,25 @@ class Catan
     pair<int, unsigned int> biggestArmy;
 
 private:
-    void createDCs();
-    bool dcHasOwner(unsigned int i);
+    void createDCs();                // initialize the Catan's array of the develop cards.
+    bool dcHasOwner(unsigned int i); // check if the develop card has owner.
 
 public:
+    /**
+     * This is a constructor for the catan's game.
+     *  The constructor calles to createDCs and initialize the biggestArmy field.
+     */
     Catan();
-    unsigned int rollDice(unsigned int num);
+
+    /**
+     * This function returns a result of random rolling of two dices.
+     * @returns the result of random rolling of two dices.
+     */
+    unsigned int rollDice();
+
+    /**
+     *
+     */
     void allocateResources(unsigned int diceRoll);
     int buildRoad(Player *p, unsigned int i1, unsigned int i2, bool start);
     int buildSettlement(Player *p, unsigned int s, bool start);

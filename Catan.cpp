@@ -35,14 +35,11 @@ void Catan::createDCs()
     }
 }
 
-unsigned int Catan::rollDice(unsigned int num)
+unsigned int Catan::rollDice()
 {
-    unsigned int roll = num;
-    if (roll == 0)
-    {
-        roll += rand() % 6 + 1;
-        roll += rand() % 6 + 1;
-    }
+    unsigned int roll = 0;
+    roll += rand() % 6 + 1;
+    roll += rand() % 6 + 1;
     return roll;
 }
 

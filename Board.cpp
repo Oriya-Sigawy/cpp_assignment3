@@ -251,12 +251,11 @@ int Board::updateToCity(Player *p, unsigned int s)
         {
             return -2; // the city belongs to someone else
         }
-        else
-            (!this->intersections[s - 1].s.isCity)
-            {
-                this->intersections[s - 1].s.isCity = true;
-                return 0; // success
-            }
+        else if (!this->intersections[s - 1].s.isCity)
+        {
+            this->intersections[s - 1].s.isCity = true;
+            return 0; // success
+        }
     }
     return -3; // the city does not belong to anyone or if s is already a city
 }

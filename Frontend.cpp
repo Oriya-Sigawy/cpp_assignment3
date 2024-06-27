@@ -341,7 +341,7 @@ bool Frontend::useDC_F()
         }
         else
         {
-            for(unsigned int i = 0; i < COUNT_PLAYERS; i++)
+            for (unsigned int i = 0; i < COUNT_PLAYERS; i++)
             {
                 if (this->players[i].getID() == this->game.getOwnerOfBiggestArmy())
                     this->game.useKnight(this->turn, &this->players[i], index);
@@ -501,7 +501,11 @@ bool Frontend::finish()
 
 void Frontend::rollDice_F(unsigned int num)
 {
-    unsigned int dice_roll = game.rollDice(num);
+    unsigned int dice_roll;
+    if (num == 0)
+    {
+        dice_roll = game.rollDice();
+    }
     cout << "dice_roll is " << dice_roll << endl;
     if (dice_roll == 7)
     {

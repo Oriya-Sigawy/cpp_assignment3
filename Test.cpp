@@ -132,12 +132,10 @@ TEST_CASE("check resourceAllocation && updateToCity")
 TEST_CASE("check rollDice()")
 {
     Catan game = Catan();
-    int x = game.rollDice(0);
+    int x = game.rollDice();
     bool check = (x > 0) && (x <= 12);
     CHECK(check);
-    x = game.rollDice(5);
-    CHECK(x == 5);
-    x = game.rollDice(0);
+    x = game.rollDice();
     check = (x > 0) && (x <= 12);
     CHECK(check);
 }
