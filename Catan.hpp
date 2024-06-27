@@ -57,13 +57,67 @@ public:
     unsigned int rollDice();
 
     /**
-     *
+     *This function calles to Board's resourcesAllocation.
+     *@param:
+     *diceRoll - if its 0, the function calles to Board's allocateResourcesForBeginning. Else, the function sends diceRoll to Board's allocateResources.
      */
     void allocateResources(unsigned int diceRoll);
+
+    /**
+     * This function is used to build a road.
+     * The function checks that p has enough resources to build a road, and if p has, calls to Board's build_road.
+     *  If the road building succeed, the function takes the road's price from p's resources.
+     * @param:
+     *  p: the player who wants to build a road.
+     * i1, i2: the intersections of the road that p wants to build.
+     *  start: true if this function is called on the beginning of the game, false otherwise.
+     *         if its true, the function does not check if p has enough resources, and does not take the road's price from p's resources.
+     * @returns: -2 if p does not have enough resources, or the result of the Board's build_road.
+     */
     int buildRoad(Player *p, unsigned int i1, unsigned int i2, bool start);
+
+    /**
+     * This function is used to build a settlement.
+     * The function checks that p has enough resources to build a settlement, and if p has, calls to Board's build_settlement.
+     *  If the settlement building succeed, the function takes the settlement's price from p's resources.
+     * @param:
+     *  p: the player who wants to build a settlement.
+     * s: the settlement p wants to build.
+     *  start: true if this function is called on the beginning of the game, false otherwise.
+     *         if its true, the function does not check if p has enough resources, and does not take the settlement's price from p's resources.
+     * @returns: -2 if p does not have enough resources, or the result of the Board's build_settlement.
+     */
     int buildSettlement(Player *p, unsigned int s, bool start);
+
+    /**
+     * This function is used to update a settlement to a city.
+     * The function checks that p has enough resources to update a settlement to city, and if p has, calls to Board's updateToCity.
+     *  If the update succeed, the function takes the updates's price from p's resources.
+     * @param:
+     *  p: the player who wants to update a settlement to a city.
+     * s: the settlement p wants to update.
+     * @returns: -1 if p does not have enough resources, or the result of the Board's updateToCity.
+     */
     int updateToCity(Player *p, unsigned int s);
+
+    /**
+     * This function is used to buy a develop card. 
+     * The function checks that p has enough resources, and if he has, takes the DC price from p's resources.
+     * @param: 
+     * p: the player who wants to buy a develop card.
+     * dc: the type of the develop card p wants to buy.
+     * @returns: -2 if there is no available DC of this type, -1 if p does not have enough resources, 0 if succeed.
+     */
     int buyDevelopCard(Player *p, DCType dc);
+
+    /**
+     * This function is used to check if p can use a DC of a specific type.
+     * the function checks on the Catan's DC list if there is an unused DC that p owns.
+     * @param:
+     * p: the player who wants to use the DC.
+     * dc: the type of DC that p wants to use.
+     * @returns: -1 if p does not have an unused DC of dc's type, and if p has, returns the i
+     */
     int canUseDC(Player *p, DCType dc);
     int useKnight(Player *p, Player *p2, int index);
     int useVictoryPoint(Player *p, int index);
