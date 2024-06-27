@@ -1,3 +1,4 @@
+// 214984932 Oriyas.07@gmail.com
 #include <utility>
 #include "Board.hpp"
 #include "Player.hpp"
@@ -5,6 +6,7 @@ using std::pair;
 
 Board::Board()
 {
+    // initialize
     createIntersections();
     createHexagon(10, ORE, 0, 1, 4, 5, 8, 9, 13);
     createHexagon(2, WOOL, 1, 2, 5, 9, 14, 10, 6);
@@ -66,9 +68,10 @@ void Board::createHexagon(unsigned int dn, resourceType rt, int id, int i1, int 
 {
 
     Hexagon h = {
-        dn,
-        rt,
-        id,
+        dn, // dice-number
+        rt, // resource
+        id, // ID of the land
+        // list of the intersections on the land
         {&this->intersections[i1 - 1], &this->intersections[i2 - 1], &this->intersections[i3 - 1], &this->intersections[i4 - 1], &this->intersections[i5 - 1], &this->intersections[i6 - 1]},
     };
     lands[id] = h;
@@ -112,20 +115,21 @@ bool Board::myinterHasOwner(unsigned int l, unsigned int x)
 {
     return lands[l].myIntersections[x]->s.owner != nullptr;
 }
-//
+
 int Board::build_road(Player *p, unsigned int i1, unsigned int i2, bool start)
 {
     if (i1 >= COUNT_ROADS || i2 >= COUNT_ROADS)
     {
-        return -3;
+        return -3; // out of bounds
     }
     bool canBuild = false;
-    if (!start)
+    if (!start) // means that the road needs to be connected to another of p's roads
     {
         for (unsigned int i = 0; i < COUNT_ROADS; i++)
         {
             unsigned int f = this->roads[i].intersections.first;
             unsigned int s = this->roads[i].intersections.second;
+            // checks that the road is connected to another of p's roads
             if (((f == i1 && s != i2) || (f == i2 && s != i1) || (f != i1 && s == i2) || (f != i2 && s == i1)))
             {
                 if (roadHasOwner(i) && (this->roads[i].owner->getID() == p->getID()))
@@ -135,13 +139,14 @@ int Board::build_road(Player *p, unsigned int i1, unsigned int i2, bool start)
                 }
             }
         }
+        // checks that the road is connected to one of p's settlements
         if ((interHasOwner(i1 - 1) && this->intersections[i1 - 1].s.owner->getID() == p->getID()) || (interHasOwner(i2 - 1) && this->intersections[i2 - 1].s.owner->getID() == p->getID()))
         {
             canBuild = true;
         }
         if (!canBuild)
         {
-            return -1;
+            return -1; // there is no road or settlement of p connect to the road
         }
     }
     if (start || canBuild)
@@ -155,25 +160,26 @@ int Board::build_road(Player *p, unsigned int i1, unsigned int i2, bool start)
                 if (!roadHasOwner(i))
                 {
                     this->roads[i].owner = p;
-                    return 0;
+                    return 0; // success
                 }
                 else
                 {
-                    return -1;
+                    return -1; // the road belongs to someone else
                 }
             }
         }
     }
-    return -3;
+    return -3; // there is no road between i1 to i2
 }
 int Board::build_settlement(Player *p, unsigned int s, bool start)
 {
     if (s >= COUNT_INTERSECTIONS)
     {
-        return -3;
+        return -3; // out of bounds
     }
     for (unsigned int i = 0; i < COUNT_ROADS; i++)
     {
+        // if the settlement is in the edge of one of p's roads
         if (start || (roadHasOwner(i) && this->roads[i].owner->getID() == p->getID() && (this->roads[i].intersections.first == (s) || this->roads[i].intersections.second == (s))))
         {
             for (unsigned int j = 0; j < COUNT_INTERSECTIONS; j++)
@@ -184,7 +190,7 @@ int Board::build_settlement(Player *p, unsigned int s, bool start)
                     {
                         this->intersections[j].s.owner = p;
                         p->updateVictoryPoints(1);
-                        return 0;
+                        return 0; // success
                     }
                     else
                     {
@@ -208,7 +214,7 @@ void Board::resourcesAllocation(unsigned int num)
                 if (myinterHasOwner(i, j))
                 {
                     unsigned int x = 1;
-                    if (this->lands[i].myIntersections[j]->s.isCity)
+                    if (this->lands[i].myIntersections[j]->s.isCity) // city gives 2 of the resource instead of 1
                     {
                         x++;
                     }
@@ -237,16 +243,20 @@ int Board::updateToCity(Player *p, unsigned int s)
 {
     if (s >= COUNT_INTERSECTIONS)
     {
-        return -4;
+        return -4; // out of bounds
     }
-    if (interHasOwner(s - 1) && this->intersections[s - 1].s.owner->getID() != p->getID())
+    if (interHasOwner(s - 1))
     {
-        return -2;
+        if (this->intersections[s - 1].s.owner->getID() != p->getID())
+        {
+            return -2; // the city belongs to someone else
+        }
+        else
+            (!this->intersections[s - 1].s.isCity)
+            {
+                this->intersections[s - 1].s.isCity = true;
+                return 0; // success
+            }
     }
-    if (!this->intersections[s - 1].s.isCity)
-    {
-        this->intersections[s - 1].s.isCity = true;
-        return 0;
-    }
-    return -3;
+    return -3; // the city does not belong to anyone or if s is already a city
 }

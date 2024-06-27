@@ -1,3 +1,4 @@
+// 214984932 Oriyas.07@gmail.com
 #pragma once
 #include <array>
 #include <utility>
@@ -61,7 +62,7 @@ public:
      * p: the player who want to build the road.
      * i1, i2: the edges of the road.
      * start: boolean to if the function was called in the start of the game or not.
-              if not, p can only build a road if the new road is connected to another p's road.
+              if not, p can only build a road if the new road is connected to another p's road or to one of p's settlements.
      * @returns: 0 in success,
                 -1 if start is false and the new road is not connected to any of p's road or if the road between i1 to i2 belongs to someone else,
                 -3 if i1 or i2 is out of bound or if there is no road between i1 to i2.
@@ -100,7 +101,7 @@ public:
      * @param:
      *  p: the owner of the settlement.
      *  s: the settlement to update.
-     * @returns: 0 in success, -2 if s does not belong to p, -3 if s is already a city, -4 if s is out of bound.
+     * @returns: 0 in success, -2 if s does not belong to p, -3 if s is already a city or does not belong to anyone, -4 if s is out of bound.
      */
     int updateToCity(Player *p, unsigned int s);
 
