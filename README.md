@@ -20,15 +20,25 @@ Board's methods:
 * `build_road()`
 * `build_settlement()`
 * `updateToCity()`
-* `allocaateResourcesForBeginning` : allocate resources to every settlement that has an owner.
-* `allocateResources` : allocate resources by the result of the random dice roll.
+* `allocaateResourcesForBeginning()` : allocate resources to every settlement that has an owner.
+* `allocateResources()` : allocate resources by the result of the random dice roll.
 The class has more private functions that help the public functions.
 
 `The Catan class` - this class deals with the game's logic. The class receives the user's choices from the frontend, and pass them to Board when needed.   Catan mainly deal with the develop cards.  
 Catan's methods:
 * `rollDice()` : returns the result of a random roll of 2 dice.
-* `allocateResources` : calls Board's allocateResources.
-* `buildRoad` : checks that p has enough resources to build a road, and if p has, calls to Board's build_road.
-* 'buildSettlement` : checks that p has enough resources to build a settlement, and if p has, calls to Board's build_settlement.
-* `updateToCity` : checks that p has enough resources to update a settlement to city, and if p has, calls to Board's updateToCity.
-* 
+* `allocateResources()` : calls Board's allocateResources.
+* `buildRoad()` : checks that p has enough resources to build a road, and if p has, calls to Board's build_road.
+* 'buildSettlement()` : checks that p has enough resources to build a settlement, and if p has, calls to Board's build_settlement.
+* `updateToCity()` : checks that p has enough resources to update a settlement to city, and if p has, calls to Board's updateToCity.
+* `buyDevelopCard()`
+* `canUseDC()` : checks if p can use a DC of a specific type.
+* `useKnight()`
+* `useVictoryPoint()`
+* `useYearOfPlenty()`
+* `useMonopoly()`
+* `useRoadBuilding()`
+* `trade()` : receives 2 player to switch resources between and vector of pairs of <RESOURCE_TYPE, AMOUNT> and switch the resources.
+* `check_winner()` : receives a player and check if he won.
+* `getOwnerOfBiggestArmy()`
+The class has more private functions that help the public functions.
