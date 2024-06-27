@@ -42,7 +42,8 @@ Catan's methods:
 * `trade()` : receives 2 player to switch resources between and vector of pairs of <RESOURCE_TYPE, AMOUNT> and switch the resources.
 * `check_winner()` : receives a player and check if he won.
 * `getOwnerOfBiggestArmy()`
-The class has more private functions that help the public functions.  
+The class has more private functions that help the public functions.
+
 `The Frontend class` - this class deals with communication with the user. The class receives the user's choices and bring them to Catan.  This class is the manager class.
 Frontend's methods:
 * `Frontend()` : constructor.
