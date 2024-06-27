@@ -24,6 +24,11 @@ Board's methods:
 * `allocateResources` : allocate resources by the result of the random dice roll.
 The class has more private functions that help the public functions.
 
-`The Catan class` - this class deals with the game's logic. The class receives the user's choices from the frontend, and pass them to Board when needed.
+`The Catan class` - this class deals with the game's logic. The class receives the user's choices from the frontend, and pass them to Board when needed.   Catan mainly deal with the develop cards.  
 Catan's methods:
-* `
+* `rollDice()` : returns the result of a random roll of 2 dice.
+* `allocateResources` : calls Board's allocateResources.
+* `buildRoad` : checks that p has enough resources to build a road, and if p has, calls to Board's build_road.
+* 'buildSettlement` : checks that p has enough resources to build a settlement, and if p has, calls to Board's build_settlement.
+* `updateToCity` : checks that p has enough resources to update a settlement to city, and if p has, calls to Board's updateToCity.
+* 
