@@ -37,7 +37,6 @@ class Catan
 private:
     void createDCs();
     bool dcHasOwner(unsigned int i);
-    int getOwnerOfBiggestArmy();
 
 public:
     Catan();
@@ -55,4 +54,5 @@ public:
     int useRoadBuilding(Player *p, pair<unsigned int, unsigned int> r1, pair<unsigned int, unsigned int> r2, int index);
     void trade(vector<pair<resourceType, unsigned int>> resourcesToTrade, Player *p1, Player *p2);
     bool check_winner(Player *p);
+    int getOwnerOfBiggestArmy();
 };

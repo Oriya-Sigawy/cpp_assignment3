@@ -23,10 +23,20 @@ Player::Player(int id)
 // setters
 void Player::updateVictoryPoints(int num)
 {
+    if (num < (-1 * (int)this->victory_points))
+    {
+        this->victory_points = 0;
+        return;
+    }
     this->victory_points += num;
 }
 void Player::updateKnightsCount(int num)
 {
+    if (num < (-1 * (int)this->knightsCount))
+    {
+        this->knightsCount = 0;
+        return;
+    }
     this->knightsCount += num;
 }
 void Player::updateResource(resourceType rt, int amount)
@@ -34,18 +44,44 @@ void Player::updateResource(resourceType rt, int amount)
     switch (rt)
     {
     case WOOL:
+        if (amount < (-1 * (int)this->player_rb.wool))
+        {
+            this->player_rb.wool = 0;
+            break;
+        }
         player_rb.wool += amount;
         break;
     case GRAIN:
+        if (amount < (-1 * (int)this->player_rb.grain))
+        {
+            this->player_rb.grain = 0;
+            break;
+        }
         player_rb.grain += amount;
         break;
     case LUMBER:
+        if (amount < (-1 * (int)this->player_rb.lumber))
+        {
+            this->player_rb.lumber = 0;
+            break;
+        }
         player_rb.lumber += amount;
         break;
     case BRICK:
+        if (amount < (-1 * (int)this->player_rb.brick))
+        {
+            this->player_rb.brick = 0;
+            break;
+        }
         player_rb.brick += amount;
         break;
     case ORE:
+        if (amount < (-1 * (int)this->player_rb.ore))
+        {
+            this->player_rb.ore = 0;
+            break;
+            ;
+        }
         player_rb.ore += amount;
         break;
     case DESERT:

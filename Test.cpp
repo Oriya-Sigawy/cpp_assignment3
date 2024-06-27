@@ -42,6 +42,11 @@ TEST_CASE("check resources")
     CHECK(p.getResourceCount(WOOL) == 1);
     CHECK(p.getResourceCount(LUMBER) == 0);
     CHECK(p.getResourcesCount() == 4);
+    p.updateResource(ORE, -2);
+    CHECK(p.getResourceCount(ORE) == 0);
+    p.updateResource(BRICK, -50);
+    CHECK(p.getResourceCount(BRICK) == 0);
+    CHECK(p.getResourceCount(GRAIN) == 3);
 }
 
 // tests for board.cpp:
@@ -49,9 +54,11 @@ TEST_CASE("check buildRoad in start")
 {
     Player p = Player(1);
     Board board = Board();
+    Player p2 = Player(2);
     CHECK(board.build_road(&p, 1, 5, true) == 0);
-    CHECK(board.build_road(&p, 1, 75, true) == -3);
-    CHECK(board.build_road(&p, 1, 25, true) == -3);
+    CHECK(board.build_road(&p, 1, 75, true) == -3); // 75 is out of bound
+    CHECK(board.build_road(&p, 1, 25, true) == -3); // 1-25 is not an existing road
+    CHECK(board.build_road(&p2, 1, 5, true) == -1); // this road is already belong to p
 }
 
 TEST_CASE("check buildRoad not in start")
@@ -62,6 +69,10 @@ TEST_CASE("check buildRoad not in start")
     Player p2 = Player(2);
     CHECK(board.build_road(&p2, 1, 5, true) == 0);
     CHECK(board.build_road(&p, 1, 5, true) == -1);
+    p2.updateResource(BRICK, 1);
+    p2.updateResource(LUMBER, 1);
+    int x = board.build_road(&p2, 1, 4, false);
+    CHECK(x == 0);
 }
 
 TEST_CASE("check buildSettlement")
@@ -86,6 +97,9 @@ TEST_CASE("check buildSettlement")
     CHECK(result == 0);
     result = board.build_settlement(&p, 7, false);
     CHECK(result == -3);
+    Player p2 = Player(2);
+    result = board.build_settlement(&p2, 4, true);
+    CHECK(result == -1);
 }
 
 TEST_CASE("check resourceAllocation && updateToCity")
@@ -180,18 +194,15 @@ TEST_CASE("check buildSettlement() && updateToCity")
     CHECK(p.getResourceCount(GRAIN) == 2);
 }
 
-TEST_CASE("check buyDC, useVP, canUseDC")
+TEST_CASE("check buyDC, useVP")
 {
     Catan game = Catan();
     Player player0 = Player(0);
-    Player player1 = Player(1);
     Player player2 = Player(2);
-    // std::array<Player, COUNT_PLAYERS> players = {player0, player1, player2};
     CHECK(game.buyDevelopCard(&player2, VICTORY_POINT) == -1); // player2 does not have enough resources
-    player0.updateResource(GRAIN, TYPES_COUNT + 2);            // will buy 3 knights
-    player0.updateResource(ORE, TYPES_COUNT + 2);
-    player0.updateResource(WOOL, TYPES_COUNT + 2);
-
+    player0.updateResource(GRAIN, 2);
+    player0.updateResource(ORE, 2);
+    player0.updateResource(WOOL, 2);
     CHECK(game.buyDevelopCard(&player0, TYPES_COUNT) == -2); // there is no DC with the type "TYPES_COUNT"
 
     // check victory point
@@ -202,10 +213,20 @@ TEST_CASE("check buyDC, useVP, canUseDC")
     CHECK(player0.getVictoryPoints() == 1);
     int x = game.canUseDC(&player0, VICTORY_POINT);
     CHECK(x == -1);
-
+}
+TEST_CASE("check useKnight")
+{
     // check knight
+    Catan game = Catan();
+    Player player0 = Player(0);
+    Player player1 = Player(1);
+    player0.updateResource(GRAIN, 2); // will buy 3 knights
+    player0.updateResource(ORE, 2);
+    player0.updateResource(WOOL, 2);
+    CHECK(game.getOwnerOfBiggestArmy() == -1);
+    
     CHECK(game.buyDevelopCard(&player0, KNIGHT) == 0);
-    index = game.canUseDC(&player0, KNIGHT);
+    int index = game.canUseDC(&player0, KNIGHT);
     CHECK(index >= 0);
     CHECK(game.useKnight(&player0, &player0, index) == 0);
     CHECK(player0.getKnightsCount() == 1);
@@ -231,7 +252,7 @@ TEST_CASE("check buyDC, useVP, canUseDC")
     game.buyDevelopCard(&player1, KNIGHT);
     index = game.canUseDC(&player1, KNIGHT);
     CHECK(index >= 0);
-    x = game.useKnight(&player1, &player0, index);
+    int x = game.useKnight(&player1, &player0, index);
     CHECK(x == 0);
     CHECK(player1.getKnightsCount() == 4);
     CHECK(player1.getVictoryPoints() == 2);

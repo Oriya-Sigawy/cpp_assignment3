@@ -335,13 +335,13 @@ bool Frontend::useDC_F()
     switch (dc)
     {
     case KNIGHT:
-        if (his->game.getOwnerOfBiggestArmy() == -1)
+        if (this->game.getOwnerOfBiggestArmy() == -1)
         {
             this->game.useKnight(this->turn, this->turn, index);
         }
         else
         {
-            (unsigned int i = 0; i < COUNT_PLAYERS; i++)
+            for(unsigned int i = 0; i < COUNT_PLAYERS; i++)
             {
                 if (this->players[i].getID() == this->game.getOwnerOfBiggestArmy())
                     this->game.useKnight(this->turn, &this->players[i], index);
