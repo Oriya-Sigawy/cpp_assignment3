@@ -127,6 +127,18 @@ TEST_CASE("check resourceAllocation && updateToCity")
     CHECK(board.updateToCity(&p, 45) == -2); // the settlement does not belong to p
 }
 
+TEST_CASE("test resourcesAllocationForBeginning")
+{
+    Board board = Board();
+    Player p = Player(0);
+    board.build_settlement(&p, 10, true);
+    CHECK(p.getResourceCount(WOOL) == 0);
+    CHECK(p.getResourceCount(LUMBER) == 0);
+    board.resourcesAllocationForBeginnig();
+    CHECK(p.getResourceCount(WOOL) == 2);
+    CHECK(p.getResourceCount(LUMBER) == 1);
+}
+
 // tests for Catan
 
 TEST_CASE("check rollDice()")

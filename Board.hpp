@@ -88,7 +88,7 @@ public:
      * The function goes over all the intersections in the board, and if the intersection has an owner,
         the owner gets 1 of every resource of the lands the intersection is on.
      */
-    void resourcesAllocationForBeginnig(); // TODO tests for that
+    void resourcesAllocationForBeginnig(); 
 
     /**
      * This function allocate resources to every player that have a settlement on a land that its dice-number is equal to num.

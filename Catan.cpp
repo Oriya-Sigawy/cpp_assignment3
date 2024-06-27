@@ -47,7 +47,7 @@ void Catan::allocateResources(unsigned int diceRoll)
 {
     if (diceRoll == 0)
     {
-        this->game_board.resourcesAllocationForBeginnig(); // TODO connected to the test
+        this->game_board.resourcesAllocationForBeginnig(); 
     }
     else
     {
