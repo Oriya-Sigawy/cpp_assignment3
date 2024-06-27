@@ -245,6 +245,9 @@ TEST_CASE("check useKnight")
     CHECK(player0.getKnightsCount() == 3);
     CHECK(player0.getVictoryPoints() == 2);
 
+    CHECK(player1.getKnightsCount() == 0);
+    player1.updateKnightsCount(-5);
+    CHECK(player1.getKnightsCount() == 0);
     player1.updateKnightsCount(3);
     player1.updateResource(GRAIN, 1); // will buy 3 knights
     player1.updateResource(ORE, 1);
@@ -256,6 +259,8 @@ TEST_CASE("check useKnight")
     CHECK(x == 0);
     CHECK(player1.getKnightsCount() == 4);
     CHECK(player1.getVictoryPoints() == 2);
+    CHECK(player0.getVictoryPoints() == 0);
+    player0.updateVictoryPoints(-50);
     CHECK(player0.getVictoryPoints() == 0);
 }
 

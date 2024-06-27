@@ -8,6 +8,7 @@ Player::Player(int id)
     {
         throw std::out_of_range("Too many / too few players");
     }
+    // initialize
     this->ID = id;
     this->victory_points = 0;
     this->knightsCount = 0;
@@ -23,7 +24,7 @@ Player::Player(int id)
 // setters
 void Player::updateVictoryPoints(int num)
 {
-    if (num < (-1 * (int)this->victory_points))
+    if (num < (-1 * (int)this->victory_points)) // means that I was requested to reduse more than what this Player really have.
     {
         this->victory_points = 0;
         return;
@@ -32,7 +33,7 @@ void Player::updateVictoryPoints(int num)
 }
 void Player::updateKnightsCount(int num)
 {
-    if (num < (-1 * (int)this->knightsCount))
+    if (num < (-1 * (int)this->knightsCount)) // means that I was requested to reduse more than what this Player really have.
     {
         this->knightsCount = 0;
         return;
@@ -44,7 +45,7 @@ void Player::updateResource(resourceType rt, int amount)
     switch (rt)
     {
     case WOOL:
-        if (amount < (-1 * (int)this->player_rb.wool))
+        if (amount < (-1 * (int)this->player_rb.wool)) // means that I was requested to reduse more than what this Player really have.
         {
             this->player_rb.wool = 0;
             break;
@@ -52,7 +53,7 @@ void Player::updateResource(resourceType rt, int amount)
         player_rb.wool += amount;
         break;
     case GRAIN:
-        if (amount < (-1 * (int)this->player_rb.grain))
+        if (amount < (-1 * (int)this->player_rb.grain)) // means that I was requested to reduse more than what this Player really have.
         {
             this->player_rb.grain = 0;
             break;
@@ -60,7 +61,7 @@ void Player::updateResource(resourceType rt, int amount)
         player_rb.grain += amount;
         break;
     case LUMBER:
-        if (amount < (-1 * (int)this->player_rb.lumber))
+        if (amount < (-1 * (int)this->player_rb.lumber)) // means that I was requested to reduse more than what this Player really have.
         {
             this->player_rb.lumber = 0;
             break;
@@ -68,7 +69,7 @@ void Player::updateResource(resourceType rt, int amount)
         player_rb.lumber += amount;
         break;
     case BRICK:
-        if (amount < (-1 * (int)this->player_rb.brick))
+        if (amount < (-1 * (int)this->player_rb.brick)) // means that I was requested to reduse more than what this Player really have.
         {
             this->player_rb.brick = 0;
             break;
@@ -76,11 +77,10 @@ void Player::updateResource(resourceType rt, int amount)
         player_rb.brick += amount;
         break;
     case ORE:
-        if (amount < (-1 * (int)this->player_rb.ore))
+        if (amount < (-1 * (int)this->player_rb.ore)) // means that I was requested to reduse more than what this Player really have.
         {
             this->player_rb.ore = 0;
             break;
-            ;
         }
         player_rb.ore += amount;
         break;
