@@ -26,6 +26,7 @@ The class has more private functions that help the public functions.
 
 `The Catan class` - this class deals with the game's logic. The class receives the user's choices from the frontend, and pass them to Board when needed.   Catan mainly deal with the develop cards.  
 Catan's methods:
+* `Catan()` : constructor.
 * `rollDice()` : returns the result of a random roll of 2 dice.
 * `allocateResources()` : calls Board's allocateResources.
 * `buildRoad()` : checks that p has enough resources to build a road, and if p has, calls to Board's build_road.
@@ -41,4 +42,22 @@ Catan's methods:
 * `trade()` : receives 2 player to switch resources between and vector of pairs of <RESOURCE_TYPE, AMOUNT> and switch the resources.
 * `check_winner()` : receives a player and check if he won.
 * `getOwnerOfBiggestArmy()`
+The class has more private functions that help the public functions.  
+`The Frontend class` - this class deals with communication with the user. The class receives the user's choices and bring them to Catan.  This class is the manager class.
+Frontend's methods:
+* `Frontend()` : constructor.
+* `updateToCityF()`
+* `seven in dice()` : in case when seven is the dice result, the user needs to decide which resources he gives up on.
+* `tradeF()`
+* `chooseRoadF()`
+* `chooseSettlementF()`
+* `buyDC_F()`
+* `useDC_F()`
+* `getPlayer()` : receives an index and return the players in this index in the player's array.
+* `getTurn()` :returns the player who owns the current turn.
+* `next()` : pass the turn to the next player.
+* `initialeBuild()` : receives from the user which roads and settlements he wants to build on the beginning of the game.
+* `finish()` : check if one of the players won.
+* `rollDice_F` : presents to the user what number was rolled on the dice.
+* `allocateFB` : used for the initial resources allocation in the beginning of the game.
 The class has more private functions that help the public functions.
