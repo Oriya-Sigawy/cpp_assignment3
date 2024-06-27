@@ -1,6 +1,6 @@
 # cpp_assignment3
 In this assignment I implemented a catan game (with the rules I understood, I do not know this game.
-I wrote a Player class, a Board class, a Catan class and a frontend class.  
+I wrote a Player class, a Board class, a Catan class and a Frontend class.  
 I will explain them one by one.  
 `The Player class` - This class represent a player in the game. The class has a resources bank that saves how much the player has of every resource.  
 Player's methods:  
@@ -23,3 +23,7 @@ Board's methods:
 * `allocaateResourcesForBeginning` : allocate resources to every settlement that has an owner.
 * `allocateResources` : allocate resources by the result of the random dice roll.
 The class has more private functions that help the public functions.
+
+`The Catan class` - this class deals with the game's logic. The class receives the user's choices from the frontend, and pass them to Board when needed.
+Catan's methods:
+* `
