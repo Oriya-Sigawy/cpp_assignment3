@@ -14,7 +14,7 @@ Player's methods:
 * `getKnightCount()`
 * `getID()`
 
-`The Board class` - this class deals with everything that connects to the game's board (roads, intersections, settlements, citys, lands).
+`The Board class` - this class deals with everything that connects to the game's board (roads, intersections, settlements, citys, lands).  
 Board's methods:
 * `Board()` : a constructor.
 * `build_road()`
