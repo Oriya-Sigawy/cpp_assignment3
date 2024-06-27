@@ -66,5 +66,6 @@ The class has more private functions that help the public functions.
 HOW TO RUN THIS CODE?
 * To run the frontend, use `make frontend` or just `make` and than `./frontend` .
 * To run the test, use `make test` and than `./test` .
-* To run the main, use `make main` and than `./main` .  
+* To run the main, use `make main` and than `./main` .
+  
 GOOD LUCK!
