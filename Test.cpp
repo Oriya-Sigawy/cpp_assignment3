@@ -307,8 +307,6 @@ TEST_CASE("check useRoadBuilding()")
     Catan game = Catan();
     Player p = Player(0);
     // build roads to be connected to the road p will build with the DC
-    p.updateResource(BRICK, 2);
-    p.updateResource(LUMBER, 2);
     game.buildRoad(&p, 1, 4, true);
     game.buildRoad(&p, 2, 6, true);
 
@@ -323,6 +321,8 @@ TEST_CASE("check useRoadBuilding()")
     std::pair<unsigned int, unsigned int> r2 = std::make_pair(6, 10);
     int x = game.useRoadBuilding(&p, r1, r2, index);
     CHECK(x == 0);
+    CHECK(p.getResourceCount(BRICK) == 0);
+    CHECK(p.getResourceCount(LUMBER) == 0);
 
     // check that p's road is not valid to build on
     Player p1 = Player(1);

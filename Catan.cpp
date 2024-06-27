@@ -47,7 +47,7 @@ void Catan::allocateResources(unsigned int diceRoll)
 {
     if (diceRoll == 0)
     {
-        this->game_board.resourcesAllocationForBeginnig();  //TODO connected to the test
+        this->game_board.resourcesAllocationForBeginnig(); // TODO connected to the test
     }
     else
     {
@@ -61,7 +61,7 @@ int Catan::buildRoad(Player *p, unsigned int i1, unsigned int i2, bool start)
     {
         if (p->getResourceCount(BRICK) < 1 || p->getResourceCount(LUMBER) < 1)
         {
-            return -2;
+            return -2; // not enough resources
         }
     }
     int x = this->game_board.build_road(p, i1, i2, start);
@@ -78,7 +78,7 @@ int Catan::buildSettlement(Player *p, unsigned int s, bool start)
     {
         if (p->getResourceCount(BRICK) < 1 || p->getResourceCount(LUMBER) < 1 || p->getResourceCount(WOOL) < 1 || p->getResourceCount(GRAIN) < 1)
         {
-            return -2;
+            return -2; // not enough resources
         }
     }
     int x = this->game_board.build_settlement(p, s, start);
@@ -96,7 +96,7 @@ int Catan::updateToCity(Player *p, unsigned int s)
 {
     if (p->getResourceCount(ORE) < 3 || p->getResourceCount(GRAIN) < 2)
     {
-        return -1;
+        return -1; // not enough resources
     }
     int result = this->game_board.updateToCity(p, s);
     if (result == 0)
@@ -112,7 +112,7 @@ int Catan::buyDevelopCard(Player *p, DCType dc)
 {
     if (p->getResourceCount(WOOL) < 1 || p->getResourceCount(GRAIN) < 1 || p->getResourceCount(ORE) < 1)
     {
-        return -1;
+        return -1; // not enough resources
     }
     for (unsigned int i = 0; i < COUNT_DCS; i++)
     {
@@ -125,7 +125,7 @@ int Catan::buyDevelopCard(Player *p, DCType dc)
             return 0;
         }
     }
-    return -2;
+    return -2; // there is no available DC from type dc
 }
 
 bool Catan::dcHasOwner(unsigned int i)
@@ -142,7 +142,7 @@ int Catan::canUseDC(Player *p, DCType dc)
             return i;
         }
     }
-    return -1;
+    return -1; // can not use this DC (p do not have unused DC of dc type)
 }
 int Catan::getOwnerOfBiggestArmy()
 {
@@ -235,15 +235,13 @@ int Catan::useMonopoly(Player *p, resourceType rt, array<Player *, COUNT_PLAYERS
 }
 int Catan::useRoadBuilding(Player *p, pair<unsigned int, unsigned int> r1, pair<unsigned int, unsigned int> r2, int index)
 {
-    p->updateResource(BRICK, 2);
-    p->updateResource(LUMBER, 2);
     int result = this->game_board.build_road(p, r1.first, r1.second, false);
-    if (result != 0)
+    if (result != 0) // failed
     {
         return result;
     }
     result = this->game_board.build_road(p, r2.first, r2.second, false);
-    if (result == 0)
+    if (result == 0) // succeed
     {
         this->game_dcs[index].used = true;
     }
