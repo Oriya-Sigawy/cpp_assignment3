@@ -10,6 +10,7 @@ using std::pair;
 using std::string;
 
 int player_offset = 0;
+
 Frontend::Frontend() : players{0, 0, 0}
 {
     for (unsigned int i = 0; i < COUNT_PLAYERS; i++)
@@ -41,7 +42,7 @@ bool Frontend::chooseRoadF(Player *p, bool start)
     {
         cout << "This road does not exist!" << endl;
     }
-    return (result == 0) ? true : false;
+    return result == 0;
 }
 
 bool Frontend::chooseSettlementF(Player *p, bool start)
@@ -88,7 +89,7 @@ bool Frontend::updateToCityF()
     {
         cout << "This is not a settlement!" << endl;
     }
-    return (result == 0) ? true : false;
+    return result == 0;
 }
 void Frontend::seven_in_dice()
 {
@@ -234,30 +235,6 @@ vector<pair<resourceType, unsigned int>> Frontend::makeVectorOfResources(Player 
     return result;
 }
 
-bool Frontend::buildF()
-{
-    bool chose = false;
-    while (!chose)
-    {
-        cout << "Player " << this->turn->getID() << ", do you want to build a road or a settlement?" << endl;
-        cout << "Enter r for road and s for settlement" << endl;
-        char choice;
-        cin >> choice;
-        if (choice == 'r')
-        {
-            return chooseRoadF(this->turn, false);
-        }
-        else if (choice == 's')
-        {
-            return chooseSettlementF(this->turn, false);
-        }
-        else
-        {
-            cout << "Invalid input, try again" << endl;
-        }
-    }
-    return false;
-}
 resourceType Frontend::convertToRT(char c)
 {
     switch (c)
@@ -534,7 +511,7 @@ int main()
         {
             char user_ans;
             cout << "Player " << turn->getID() << " , what to you want to do?" << endl;
-            cout << "Press N for nothing, T for trade, B for build, C to update settlement to city, D to buy develop card or U to use develop card" << endl;
+            cout << "Press N for nothing, T for trade, R for build a road, S for build a settlement, C to update settlement to city, D to buy develop card or U to use develop card" << endl;
             cin >> user_ans;
             switch (user_ans)
             {
@@ -543,8 +520,11 @@ int main()
             case 'T':
                 madeSomething = frontend.tradeF();
                 break;
-            case 'B':
-                madeSomething = frontend.buildF();
+            case 'R':
+                madeSomething = frontend.chooseRoadF(turn, false);
+                break;
+            case 'S':
+                madeSomething = frontend.chooseSettlementF(turn, false);
                 break;
             case 'C':
                 madeSomething = frontend.updateToCityF();
