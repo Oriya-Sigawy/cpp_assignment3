@@ -10,7 +10,6 @@ using std::endl;
 using std::pair;
 using std::string;
 #define COUNT_PLAYERS 3
-#define POINTS_TO_WIN 10
 
 // This class represent the frontend - the communication between the user to the program
 class Frontend

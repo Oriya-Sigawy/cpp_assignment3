@@ -47,7 +47,7 @@ void Catan::allocateResources(unsigned int diceRoll)
 {
     if (diceRoll == 0)
     {
-        this->game_board.resourcesAllocationForBeginnig(); 
+        this->game_board.resourcesAllocationForBeginnig();
     }
     else
     {
@@ -248,12 +248,12 @@ int Catan::useRoadBuilding(Player *p, pair<unsigned int, unsigned int> r1, pair<
     return result;
 }
 
-void Catan::trade(vector<pair<resourceType, unsigned int>> resourcesToTrade, Player *p1, Player *p2)
+void Catan::trade(vector<pair<resourceType, unsigned int>> resourcesToTrade, Player *giveTo, Player *takeFrom)
 {
     for (unsigned int i = 0; i < resourcesToTrade.size(); i++)
     {
-        p1->updateResource(resourcesToTrade[i].first, resourcesToTrade[i].second);
-        p2->updateResource(resourcesToTrade[i].first, (-1 * resourcesToTrade[i].second));
+        giveTo->updateResource(resourcesToTrade[i].first, resourcesToTrade[i].second);
+        takeFrom->updateResource(resourcesToTrade[i].first, (-1 * resourcesToTrade[i].second));
     }
 }
 bool Catan::check_winner(Player *p)

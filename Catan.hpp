@@ -11,7 +11,7 @@ using std::pair;
 using std::vector;
 
 #define COUNT_DCS 25
-#define POINTS_TO_WIN 10
+#define POINTS_TO_WIN 5
 
 // enum for the type of the develop card
 enum DCType
@@ -184,7 +184,7 @@ public:
      *  p1: the player that the resources will be given to.
      *  p2: the player that the resources will be taken from.
      */
-    void trade(vector<pair<resourceType, unsigned int>> resourcesToTrade, Player *p1, Player *p2);
+    void trade(vector<pair<resourceType, unsigned int>> resourcesToTrade, Player *giveTo, Player *takeFrom);
 
     /**
      * This function is used to check if p won the game.
